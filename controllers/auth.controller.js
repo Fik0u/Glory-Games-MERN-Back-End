@@ -2,6 +2,7 @@
 const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const uploadToCloudinary = require('../utils/cloudinaryUpload');
 
 // Register
 exports.register = async (req, res) => {
@@ -69,7 +70,11 @@ exports.updateProfile = async (req, res) => {
 
         if (email) user.email = email;
 
-        if (req.file) user.profilePicture = `/uploads/${req.file.filename}`;
+        if (req.file) {
+            const imageURL = await uploadToCloudinary(req.file.path);
+            console.log(imageURL)
+            user.profilePicture = imageURL;
+        }
 
         await user.save();
         res.status(200).json({ msg: 'Profile updated successfully', user })
