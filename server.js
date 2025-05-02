@@ -34,6 +34,12 @@ app.use('/api/cart', require('./routes/cart.route'));
 // To serve static files from 'uploads' folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Middleware
+app.use((req, res) => {
+    res.send('Backend is running...')
+});
+
+
 
 
 
